@@ -15,7 +15,7 @@ loadup:
 push:
 	git add .
 	git commit -m "$(m)"
-	git rebase origin main
+	git pull --rebase origin main
 	git push force-with-lease
 
 # Verifie que le code est de qualité 
