@@ -2,6 +2,7 @@
 
 namespace App\Tests;
 
+use App\Repository\ImageRepository;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManager;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
@@ -11,6 +12,7 @@ class RegistrationControllerTest extends WebTestCase
 {
     private KernelBrowser $client;
     private UserRepository $userRepository;
+    private ImageRepository $imageRepository;
 
     protected function setUp(): void
     {
@@ -22,6 +24,15 @@ class RegistrationControllerTest extends WebTestCase
         /** @var EntityManager $em */
         $em = $container->get('doctrine')->getManager();
         $this->userRepository = $container->get(UserRepository::class);
+        $this->imageRepository = $container->get(ImageRepository::class);
+
+
+        foreach ($this->imageRepository->findAll() as $image) {
+            $em->remove($image);
+        }
+
+        $em->flush();
+
 
         foreach ($this->userRepository->findAll() as $user) {
             $em->remove($user);
