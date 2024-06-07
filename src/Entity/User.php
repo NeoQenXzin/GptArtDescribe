@@ -2,14 +2,13 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
@@ -119,9 +118,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, \String
     }
 
     public function hashPassword(UserPasswordHasherInterface $hasher): void
-{
-    $this->password = $hasher->hashPassword($this, $this->password);
-}
+    {
+        $this->password = $hasher->hashPassword($this, $this->password);
+    }
 
     /**
      * @see UserInterface
