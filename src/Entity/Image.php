@@ -6,8 +6,9 @@ use App\Repository\ImageRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
+
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
-class Image
+class Image implements \Stringable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -34,6 +35,15 @@ class Image
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $state = null;
+
+    #[ORM\ManyToOne(inversedBy: 'images')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $userId = null;
+
+    public function __toString(): string
+    {
+        return $this->name.' '.$this->getUserId()->getId();
+    }
 
     public function getId(): ?int
     {
@@ -120,6 +130,18 @@ class Image
     public function setState(?string $state): static
     {
         $this->state = $state;
+
+        return $this;
+    }
+
+    public function getUserId(): ?User
+    {
+        return $this->userId;
+    }
+
+    public function setUserId(?User $userId): static
+    {
+        $this->userId = $userId;
 
         return $this;
     }
