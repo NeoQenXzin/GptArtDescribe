@@ -18,7 +18,7 @@ class ImageFormType extends AbstractType
             ->add('path', FileType::class, [
                 'label' => 'Image File',
                 'mapped' => false,
-                'required' => false,
+                'required' => true,
             ])
         ;
     }

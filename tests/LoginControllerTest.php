@@ -18,22 +18,19 @@ class LoginControllerTest extends WebTestCase
         $em = $container->get('doctrine.orm.entity_manager');
         $userRepository = $em->getRepository(User::class);
 
-        // Remove any existing users from the test database
-        foreach ($userRepository->findAll() as $user) {
-            $em->remove($user);
+
+        $user = $userRepository->findOneByEmail('email@example.com');
+        if (!$user) {
+            // Create a User fixture if it does not exist
+            /** @var UserPasswordHasherInterface $passwordHasher */
+            $passwordHasher = $container->get('security.user_password_hasher');
+
+            $user = (new User())->setEmail('email@example.com');
+            $user->setPassword($passwordHasher->hashPassword($user, 'password'));
+
+            $em->persist($user);
+            $em->flush();
         }
-
-        $em->flush();
-
-        // Create a User fixture
-        /** @var UserPasswordHasherInterface $passwordHasher */
-        $passwordHasher = $container->get('security.user_password_hasher');
-
-        $user = (new User())->setEmail('email@example.com');
-        $user->setPassword($passwordHasher->hashPassword($user, 'password'));
-
-        $em->persist($user);
-        $em->flush();
     }
 
     public function testLogin(): void
@@ -74,10 +71,10 @@ class LoginControllerTest extends WebTestCase
             '_password' => 'password',
         ]);
 
-        //self::assertResponseRedirects('/');
-        //$this->client->followRedirect();
+        // self::assertResponseRedirects('/');
+        // $this->client->followRedirect();
 
-       // self::assertSelectorNotExists('.alert-danger');
-        //self::assertResponseIsSuccessful();
+        // self::assertSelectorNotExists('.alert-danger');
+        // self::assertResponseIsSuccessful();
     }
 }
