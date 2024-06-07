@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\User;
+use App\Entity\Image;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -47,5 +48,6 @@ class DashboardController extends AbstractDashboardController
     {
         yield MenuItem::linktoRoute('Back to the website', 'fas fa-home', 'homepage');
         yield MenuItem::linkToCrud('Users', 'fas fa-list', User::class);
+        yield MenuItem::linkToCrud('Images', 'fas fa-list', Image::class);
     }
 }
