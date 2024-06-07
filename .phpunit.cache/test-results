@@ -1,1 +1,1 @@
-{"version":1,"defects":{"App\\Tests\\LoginControllerTest::testLogin":8,"App\\Tests\\RegistrationControllerTest::testRegister":8},"times":{"App\\Tests\\RegistrationControllerTest::testRegister":0.255}}
+{"version":1,"defects":{"App\\Tests\\LoginControllerTest::testLogin":7,"App\\Tests\\RegistrationControllerTest::testRegister":8},"times":{"App\\Tests\\RegistrationControllerTest::testRegister":0.113,"App\\Tests\\LoginControllerTest::testLogin":0.186}}
