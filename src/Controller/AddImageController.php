@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Image;
 use App\Form\ImageFormType;
+use App\Service\ChatGPTService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -14,14 +15,8 @@ use Symfony\Component\Routing\Attribute\Route;
 
 class AddImageController extends AbstractController
 {
-    private Security $security;
-
-    public function __construct(Security $security)
-    {
-        $this->security = $security;
-    }
     #[Route('/add/image', name: 'app_add_image')]
-    public function __invoke(Request $request, EntityManagerInterface $entityManager): Response
+    public function __invoke(Request $request, EntityManagerInterface $entityManager, Security $security,  ChatGPTService $chatGPTService): Response
     {
         $image = new Image();
         $form = $this->createForm(ImageFormType::class, $image);
@@ -40,9 +35,16 @@ class AddImageController extends AbstractController
 
                 }
                 $image->setPath($newFilename);
+
+                $imageUrl = $this->getParameter('images_directory') . '/' . $newFilename;
+                $description = $chatGPTService->generateImageDescription($imageUrl);
+                $image->setDescription($description);
+
+
+
             }
 
-            $currentUser = $this->security->getUser();
+            $currentUser = $security->getUser();
             $image->setUserId($currentUser);
 
             $entityManager->persist($image);
